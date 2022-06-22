@@ -1,0 +1,93 @@
+name: build ffmpeg
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'enable ssh debug'     
+        required: false
+        default: false
+      windows_msystem:
+        type: choice
+        description: 'windows build system'     
+        required: false
+        default: MSYS
+        options:
+        - MSYS
+        - MINGW
+      release_tag:
+        required: false
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        # windows-latest会始终保持最新（目前是2022）
+        # windows server 2019安装的是vs2019，windows server 2016安装的是vs2017
+        # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+        include: [
+          {os: macos-10.15},
+          {os: ubuntu-20.04},
+          {os: windows-2019, arch: x86, msystem: mingw32},
+          {os: windows-2019, arch: x64, msystem: mingw64},
+        ]
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true' }}
+
+      - name: build on windows MSYS
+        if: ${{ runner.os == 'Windows' && github.event.inputs.windows_msystem == 'MSYS' }}
+        run: ./build-win.bat ${{ matrix.arch }} ${{ github.event.inputs.windows_msystem }}
+
+      - uses: msys2/setup-msys2@v2
+        if: ${{ runner.os == 'Windows' && github.event.inputs.windows_msystem == 'MINGW' }}
+        with:
+          msystem: ${{ matrix.msystem }}
+          install: git
+
+      - name: build on windows MINGW
+        if: ${{ runner.os == 'Windows' && github.event.inputs.windows_msystem == 'MINGW' }}
+        run: ./build.sh ${{ matrix.arch }} ${{ github.event.inputs.windows_msystem }}
+        shell: msys2 {0}
+      
+      - name: build on mac
+        if: runner.os == 'macOS'
+        run: |
+          chmod +x ./build.sh && ./build.sh x64
+        shell: bash
+
+      - name: build on linux
+        if: runner.os == 'Linux'
+        run: |
+          chmod +x ./build.sh && ./build.sh x64
+        shell: bash
+
+      - name: read install name
+        id: install_name
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./INSTALL_NAME
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{steps.install_name.outputs.content}}
+          path: ./${{steps.install_name.outputs.content}}
+      
+      - name: upload release
+        if: ${{ github.event.inputs.release_tag != '' }}
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{steps.install_name.outputs.content}}
+          asset_name: ${{steps.install_name.outputs.content}}
+          tag: ${{ github.event.inputs.release_tag }}
+          overwrite: true
