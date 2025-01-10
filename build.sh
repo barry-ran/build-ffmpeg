@@ -11,8 +11,8 @@ uname
 MSYS2_PATH="/C/msys64"
 
 if [[ $# -ge 1 ]]; then
-  if [[ $1 != "x86" && $1 != "x64" ]]; then
-    echo "invalid params: build.sh [x86/x64]"
+  if [[ $1 != "x86" && $1 != "x64" && $1 != "arm64" ]]; then
+    echo "invalid params: build.sh [x86/x64/arm64]"
     exit 1
   fi
   ARCH="$1"
