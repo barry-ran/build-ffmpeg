@@ -176,6 +176,7 @@ CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --disable-postproc --disable-network --dis
 # Individual component options
 CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --disable-everything --enable-decoder=h264 --enable-parser=h264 --enable-demuxer=h264"
 CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --enable-muxer=mp4 --enable-protocol=file"
+CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --enable-decoder=opus --enable-decoder=aac"
 
 # External library support
 CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --disable-zlib --disable-iconv --disable-sdl2"
