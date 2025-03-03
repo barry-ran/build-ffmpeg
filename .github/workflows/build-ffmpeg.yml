@@ -79,7 +79,7 @@ jobs:
         with:
           path: ./INSTALL_NAME
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{steps.install_name.outputs.content}}
           path: ./${{steps.install_name.outputs.content}}
