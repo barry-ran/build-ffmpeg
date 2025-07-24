@@ -2,10 +2,10 @@
 
 set MSYS2_PATH=C:/msys64
 :: gethub action vc path
-set VCVARSALL="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvarsall.bat"
+set VCVARSALL="C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvarsall.bat"
 if not exist %VCVARSALL% (
     :: my pc vc path
-    set VCVARSALL="D:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvarsall.bat"
+    set VCVARSALL="D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat"
 )
 
 set ARCH=x64

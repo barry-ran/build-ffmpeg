@@ -30,9 +30,9 @@ jobs:
         include: [
           {os: macos-13, arch: x64},
           {os: macos-14, arch: arm64},
-          {os: ubuntu-20.04},
-          {os: windows-2019, arch: x86, msystem: mingw32},
-          {os: windows-2019, arch: x64, msystem: mingw64},
+          {os: ubuntu-22.04},
+          {os: windows-2022, arch: x86, msystem: mingw32},
+          {os: windows-2022, arch: x64, msystem: mingw64},
         ]
 
     runs-on: ${{ matrix.os }}
