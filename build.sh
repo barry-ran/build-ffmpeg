@@ -187,6 +187,7 @@ CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --disable-zlib --disable-iconv --disable-s
 # Toolchain options
 if [[ "$(uname)" == "MSYS_NT"* ]]; then
     CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --toolchain=msvc"
+    CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --enable-d3d11va --enable-hwaccel=h264_d3d11va --enable-hwaccel=hevc_d3d11va"
 fi
 # static link libgcc_s_dw2-1.dll
 EXTRA_LDFLAGS=
