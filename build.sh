@@ -187,6 +187,8 @@ CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --disable-zlib --disable-iconv --disable-s
 # Toolchain options
 if [[ "$(uname)" == "MSYS_NT"* ]]; then
     CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --toolchain=msvc"
+    # 不开d3d11va2的话avcodec_get_hw_config拿不到AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX的AVCodecHWConfig::methods
+    CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS --enable-d3d11va --enable-hwaccel=h264_d3d11va --enable-hwaccel=h264_d3d11va2 --enable-hwaccel=hevc_d3d11va --enable-hwaccel=hevc_d3d11va2"
 fi
 # static link libgcc_s_dw2-1.dll
 EXTRA_LDFLAGS=
