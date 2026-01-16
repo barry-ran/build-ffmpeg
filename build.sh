@@ -43,7 +43,7 @@ case "$(uname)" in
 esac
 
 # https://ffmpeg.org/download.html#releases
-FFMPEG_VERSION=n4.4.2
+FFMPEG_VERSION=n8.0.1
 INSTALL_NAME="ffmpeg-$FFMPEG_VERSION-$BUILD_PLATFORM-$ARCH-$LIB_TYPE.zip"
 
 if [ ! -d "ffmpeg" ]; then
